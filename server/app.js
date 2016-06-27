@@ -1,4 +1,4 @@
-//Starting point of the application 
+// Starting point of the application 
 const bodyParser = require('body-parser');
 const express = require('express');
 const http = require('http');
@@ -7,12 +7,15 @@ const mongoose = require('mongoose');
 const app = express();
 const router = require('./routes/index.js');
 
-//App Setup
+// DB Setup
+mongoose.connect('mongodb://localhost/test');
+
+// App Setup
 app.use(morgan('dev'));
 app.use(bodyParser.json({type:'*/*'}));
 router(app);
 
-//Server Setup
+// Server Setup
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 server.listen(port,'0.0.0.0');
