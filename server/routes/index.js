@@ -5,5 +5,7 @@ module.exports =  function(app){
     response.send(["Greetings welcome to the jungle","Phone","Stool","Speaker"])
   });
 
-  app.post('/signup',Authentication.signup)
+  app.post('/signup', Authentication.signup)
+
+  app.post('/deleteUser', Authentication.delete)
 }
