@@ -1,11 +1,27 @@
+const jwt = require('jwt-simple');
+const config = require('../../config.js');
 const User = require('../models/user');
+
+function tokenForUser(user){
+	const timestamp = new Date().getTime();
+	const expiry = expiryTime(timestamp);
+
+	return jwt.encode({ sub: user.id, iat: timestamp, exp: expiry}, config.secret)
+}
+
+function expiryTime(timestamp){
+	// Expires in 6 hours
+	const timeout = 6;
+	const expiry = timeout*60*60*1000;
+
+	return (timestamp+expiry)
+}
 
 exports.signup = function(req, res, next){
 	let email = "", password = "";
 
 	if (!req.body.email || !req.body.password){
-		console.log("It failed. Move along")
-		return res.status(422).send({error: 'Please enter a username or password'})
+		return res.status(422).send({error: 'Please enter a username and password'})
 	}else{
 		email = req.body.email.toLowerCase();
 		password = req.body.password;
@@ -29,7 +45,10 @@ exports.signup = function(req, res, next){
 
 		user.save(function(err){
 			if (err) { return next(err); }
-			res.status(200).json({success: 'Account Created'});
+			res.status(200).json({
+				success: 'Account Created',
+				token: tokenForUser(user)
+			});
 		})
 	});
 }

@@ -5,10 +5,11 @@ const http = require('http');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
+const config = require('../config.js');
 const router = require('./routes/index.js');
 
 // DB Setup
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect(config.mongodb);
 
 // App Setup
 app.use(morgan('dev'));
