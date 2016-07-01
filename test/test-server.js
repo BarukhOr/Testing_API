@@ -61,5 +61,25 @@ describe('User',function(){
 					done();
 				})
 		});
+
+		it('tests the signin route with a valid email and password',(done)=>{
+			chai.request(server)
+				.post('/signin')
+				.send({'email': 'Java@Scripto.io','password': '123456'})
+				.end(function(err,res){
+					expect(res).to.have.status(200);
+					done();
+				})
+		});
+
+		it('tests the signin route with a invalid email and password',(done)=>{
+			chai.request(server)
+				.post('/signin')
+				.send({'email': 'Java@Scripto.iio','password': '1234561'})
+				.end(function(err,res){
+					expect(res).to.have.status(401);
+					done();
+				})
+		});
 	})
 });
